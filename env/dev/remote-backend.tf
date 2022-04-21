@@ -1,10 +1,10 @@
 terraform {
   backend "s3" {
     encrypt = true
-    bucket  = "dev-example-tf"
-    key     = "example.tfstate"
+    bucket  = "linkage-tf"
+    key     = "linkage.tfstate"
     region  = "us-east-1"
-    profile = "multithreadlabs-dev"
+    profile = "linkage-dev"
   }
 }
 

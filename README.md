@@ -1,6 +1,6 @@
 # Terraform & AWS SAM integration example
 
-This repo demonstrates how you can integrate Terraform infrastructure deployment with an [AWS SAM Application](https://github.com/rpstreef/aws-sam-node-example/). 
+This repo demonstrates how you can integrate Terraform infrastructure deployment with an [AWS SAM Application](https://github.com/anilgs/aws-sam-node-example/). 
 
 The main reasons for this combination:
 
@@ -36,7 +36,7 @@ If you meet all the pre-requisites, do the following
   - Initialize the Terraform project for the 'dev' environment, and synchronize the state with the cloud stored .tfstate file (when present).
   - If you run it a second time, it will fail on the workspace creation, this is not an issue (the workspace already exists)
 - Run ``npm run dev-infra`` to prepare the deployment to your AWS account.
-  - Note: this [repo](https://github.com/rpstreef/aws-sam-node-example/) contains the AWS SAM template, AWS Lambda NodeJS source code, and the OpenAPI specification. These will automatically get deployed by AWS CodePipeline. But it requires a few steps after that to "connect" Terraform with AWS SAM.
+  - Note: this [repo](https://github.com/anilgs/aws-sam-node-example/) contains the AWS SAM template, AWS Lambda Python source code. These will automatically get deployed by AWS CodePipeline. But it requires a few steps after that to "connect" Terraform with AWS SAM.
   - Confirm with ``yes`` to deploy, anything else will cancel the deployment
   - The deployment will have errors; ``Error adding new Lambda Permission``, this is normal. It's because AWS SAM hasn't deployed the Lambda functions yet.
 - Run `dev-output-sam` to get a status update on the AWS SAM deployment in property ``StackStatus``
@@ -53,15 +53,13 @@ See my full guide on dev.to for more information about this project
 
 - [StandardJS](https://marketplace.visualstudio.com/items?itemName=chenxsan.vscode-standardjs)
 - [Terraform](https://marketplace.visualstudio.com/items?itemName=mauve.terraform)
-- [OpenAPI Editor](https://marketplace.visualstudio.com/items?itemName=42Crunch.vscode-openapi)
-- [OpenAPI Designer](https://marketplace.visualstudio.com/items?itemName=philosowaffle.openapi-designer)
+
 
 ## Running costs
 
 There are no costs associated with deploying any of this on AWS, there is [Free Tier](https://aws.amazon.com/free) coverage for limited free use.
 
 The following services are deployed with Terraform;
-- AWS Cognito
 - AWS IAM
 - AWS CloudWatch Alarms, costs will be incurred for enabling Detailed Monitoring for API Gateway (!)
 - AWS CodePipeline, CodeBuild, and CodeDeploy with Github as source repository. There's a free tier for:

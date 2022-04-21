@@ -1,45 +1,17 @@
-# -----------------------------------------------------------------------------
-# Module: Cognito Identity
-# -----------------------------------------------------------------------------
-module "cognito" {
-  source = "github.com/rpstreef/tf-cognito?ref=v1.1"
 
-  namespace         = var.namespace
-  resource_tag_name = var.resource_tag_name
-  region            = var.region
-
-  cognito_identity_pool_name     = var.cognito_identity_pool_name
-  cognito_identity_pool_provider = var.cognito_identity_pool_provider
-
-  schema_map = [
-    {
-      name                = "email"
-      attribute_data_type = "String"
-      mutable             = false
-      required            = true
-    },
-    {
-      name                = "phone_number"
-      attribute_data_type = "String"
-      mutable             = false
-      required            = true
-    }
-  ]
-}
 
 # -----------------------------------------------------------------------------
 #  Modules: CodePipeline
 # -----------------------------------------------------------------------------
 module "codepipeline" {
-  source = "github.com/rpstreef/terraform-aws-codepipeline-sam?ref=v1.0"
+  source = "github.com/anilgs/terraform-aws-codepipeline-sam?ref=v1.0"
 
   resource_tag_name = var.resource_tag_name
   namespace         = var.namespace
   region            = var.region
 
-  github_token        = var.github_token
-  github_owner        = var.github_owner
-  github_repo         = var.github_repo
+  repo_name           = var.repo_name
+  repo_default_branch = var.repo_default_branch
   poll_source_changes = var.poll_source_changes
 
   build_image = "aws/codebuild/standard:4.0"
@@ -52,7 +24,7 @@ module "codepipeline" {
 # -----------------------------------------------------------------------------
 
 module "cloudwatch_alarms_apigateway" {
-  source = "github.com/rpstreef/terraform-aws-cloudwatch-alarms?ref=v1.0"
+  source = "github.com/anilgs/terraform-aws-cloudwatch-alarms?ref=v1.0"
 
   namespace         = var.namespace
   region            = var.region
@@ -72,31 +44,27 @@ module "cloudwatch_alarms_apigateway" {
 # -----------------------------------------------------------------------------
 #  Modules: Lambda services
 # -----------------------------------------------------------------------------
-module "identity" {
-  source = "../../services/identity"
+module "identity_authorize" {
+  source = "../../services/identity_authorize"
 
   resource_tag_name = var.resource_tag_name
   namespace         = var.namespace
   region            = var.region
 
-  cognito_user_pool_arn = module.cognito.cognito_user_pool_arn
-
-  lambda_function_identity_arn = var.lambda_function_identity_arn
+  lambda_function_identity_authorize_arn = var.lambda_function_identity_authorize_arn
 
   api_gateway_rest_api_id = var.api_gateway_rest_api_id
 }
 
-module "user" {
-  source = "../../services/user"
+module "recruitment_requests" {
+  source = "../../services/recruitment_requests"
 
   resource_tag_name = var.resource_tag_name
   namespace         = var.namespace
   region            = var.region
 
-  cognito_user_pool_arn = module.cognito.cognito_user_pool_arn
 
-  lambda_function_user_arn         = var.lambda_function_user_arn
-  lambda_function_userReceiver_arn = var.lambda_function_userReceiver_arn
+  lambda_function_recruitment_requests_arn         = var.lambda_function_recruitment_requests_arn
 
   api_gateway_rest_api_id = var.api_gateway_rest_api_id
 }
@@ -111,29 +79,18 @@ module "ssm_parameters" {
   environment      = var.namespace
 
   parameters = {
-    "cognito_user_pool_arn" = {
+    
+    "identity_authorize_role_arn" = {
       "type"  = "String"
-      "value" = module.cognito.cognito_user_pool_arn
-    },
-    "cognito_user_pool_client_id" = {
-      "type"  = "String"
-      "value" = module.cognito.cognito_user_pool_client_id
-    },
-    "cognito_identity_pool_id" = {
-      "type"  = "String"
-      "value" = module.cognito.cognito_identity_pool_id
-    },
-    "identity_role_arn" = {
-      "type"  = "String"
-      "value" = module.identity.iam_arn
+      "value" = module.identity_authorize.iam_arn
     }
-    "user_role_arn" = {
+    "recruitment_requests_role_arn" = {
       "type"  = "String"
-      "value" = module.user.iam_arn
+      "value" = module.recruitment_requests.iam_arn
     },
     "sns_topic_arn" = {
       "type"  = "String"
-      "value" = module.user.sns_topic_arn
+      "value" = module.recruitment_requests.sns_topic_arn
     }
   }
 }

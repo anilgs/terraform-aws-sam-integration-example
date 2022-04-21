@@ -18,17 +18,7 @@ variable "resource_tag_name" {
   description = "Resource name for billing purposes"
 }
 
-# -----------------------------------------------------------------------------
-# Variables: Cognito
-# -----------------------------------------------------------------------------
 
-variable "cognito_identity_pool_name" {
-  description = "Name of the Cognito identity pool"
-}
-
-variable "cognito_identity_pool_provider" {
-  description = "Name of the Cognito identity pool provider"
-}
 
 # -----------------------------------------------------------------------------
 # Variables: CodePipeline
@@ -38,19 +28,16 @@ variable "stack_name" {
   description = "AWS SAM stack name"
 }
 
-variable "github_token" {
+
+variable "repo_name" {
   type        = string
-  description = "Github OAuth token"
+  description = "Codecommit repository name"
 }
 
-variable "github_owner" {
+variable "repo_default_branch" {
   type        = string
-  description = "Github username"
-}
-
-variable "github_repo" {
-  type        = string
-  description = "Github repository name"
+  description = "Codecommit branch name"
+  default     = "master"
 }
 
 variable "poll_source_changes" {
@@ -62,16 +49,13 @@ variable "poll_source_changes" {
 # -----------------------------------------------------------------------------
 # Variables: Lambda
 # -----------------------------------------------------------------------------
-variable "lambda_function_userReceiver_arn" {
-  description = "Lambda function User ARN"
+
+variable "lambda_function_recruitment_requests_arn" {
+  description = "Lambda function Recruitment Requests  ARN"
 }
 
-variable "lambda_function_user_arn" {
-  description = "Lambda function User Receiver ARN"
-}
-
-variable "lambda_function_identity_arn" {
-  description = "Lambda function Identity ARN"
+variable "lambda_function_identity_authorize_arn" {
+  description = "Lambda function Identity Authorize ARN"
 }
 
 # -----------------------------------------------------------------------------

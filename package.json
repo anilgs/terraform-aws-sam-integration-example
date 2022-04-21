@@ -1,18 +1,18 @@
 {
-  "name": "openapi-tf-example",
+  "name": "terraform-aws-sam-integration-example",
   "version": "1.0.0",
-  "description": "OpenAPI example with Terraform",
+  "description": "Microservices with Terraform",
   "main": "index.js",
   "scripts": {
     "dev-infra": "gulp infra --env dev",
     "dev-init": "gulp init --env dev",
     "dev-destroy": "gulp destroy --env dev",
     "dev-output": "gulp output --env dev",
-    "dev-output-sam": "aws cloudformation --region us-east-1 describe-stacks --stack-name dev-example-sam-app --profile multithreadlabs-dev"
+    "dev-output-sam": "aws cloudformation --region us-east-1 describe-stacks --stack-name linkage-recruitment-app --profile linkage-dev"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/rpstreef/openapi-tf-example.git"
+    "url": "git+https://github.com/anilgs/terraform-aws-sam-integration-example.git"
   },
   "keywords": [
     "openapi",
@@ -22,9 +22,9 @@
   "author": "Rolf Streefkerk",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/rpstreef/openapi-tf-example/issues"
+    "url": "https://github.com/anilgs/terraform-aws-sam-integration-example/issues"
   },
-  "homepage": "https://github.com/rpstreef/openapi-tf-example#readme",
+  "homepage": "https://github.com/anilgs/terraform-aws-sam-integration-example#readme",
   "dependencies": {},
   "devDependencies": {
     "gulp": "^4.0.0",
